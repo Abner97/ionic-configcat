@@ -32,6 +32,7 @@ export class DeseosService {
     const nuevaLista = new Lista(titulo);
     this.listas.push(nuevaLista);
     this.guardarStorage();
+    return nuevaLista.id;
   }
 
   guardarStorage() {
@@ -41,6 +42,11 @@ export class DeseosService {
           () => console.log("item stored"),
           (error) => console.error("error storing item", error)
         );
+  }
+
+  obtenerLista(id: string | number) {
+    id = typeof id === "number" ? id : Number(id);
+    return this.listas.find((lista) => lista.id === id);
   }
 
   cargarStorage() {

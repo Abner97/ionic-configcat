@@ -15,7 +15,7 @@ export class Tab1Page {
   ) {}
 
   async agregarLista() {
-    // this.navCtrl.navigateForward(["/tabs/tab1/agregar"]);
+    //
     const alert = await this.alertCtrl.create({
       header: "Nueva lista",
       inputs: [
@@ -39,11 +39,17 @@ export class Tab1Page {
             if (data.titulo.length === 0) {
               return;
             }
-            this.deseosService.crearLista(data.titulo);
+            const listaId = this.deseosService.crearLista(data.titulo);
+            // this.deseosService.crearLista(data.titulo);
+            this.navCtrl.navigateForward([`/tabs/tab1/agregar`, listaId]);
           },
         },
       ],
     });
     alert.present();
+  }
+
+  goToList(id: string | number) {
+    this.navCtrl.navigateForward([`/tabs/tab1/agregar`, id]);
   }
 }
