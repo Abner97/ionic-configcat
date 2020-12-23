@@ -11,10 +11,6 @@ export class DeseosService {
   platformName: string;
 
   constructor(private storage: NativeStorage, public platform: Platform) {
-    const lista1 = new Lista("Recolectar piedras del infinito");
-    const lista2 = new Lista("Héroes a desaparecer");
-    this.listas.push(lista1, lista2);
-
     this.platformName = this.platform
       .platforms()
       .find((platform) => platform === "mobileweb");
@@ -24,7 +20,11 @@ export class DeseosService {
             .platforms()
             .find((platform) => platform === "android" || platform === "ios")
         : this.platformName;
-    this.listas = this.cargarStorage();
+    let listasTemp = this.cargarStorage();
+
+    if (listasTemp !== null) {
+      this.listas = listasTemp;
+    }
     console.log(this.platformName);
   }
 

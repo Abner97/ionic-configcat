@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import * as configcat from "configcat-js";
 import { IConfigCatClient } from "configcat-common/lib/ConfigCatClient";
 import { Observable, Subject } from "rxjs";
-import { LogLevel } from "configcat-common";
+import { LogLevel, User } from "configcat-common";
 import { Platform } from "@ionic/angular";
 
 @Injectable({
@@ -11,17 +11,27 @@ import { Platform } from "@ionic/angular";
 export class ConfigcatService {
   private configCatClient: IConfigCatClient;
   private platformName: string;
-
+  private user: User;
   private list_feature: Subject<boolean> = new Subject<boolean>();
   public list_featureObs: Observable<boolean> = this.list_feature.asObservable();
 
   constructor(public platform: Platform) {
-    let logger = configcat.createConsoleLogger(LogLevel.Info); // Setting log level to 3 (Info)
+    let logger = configcat.createConsoleLogger(LogLevel.Info);
+    // Setting log level to 3 (Info)
     this.platformName = this.platform
       .platforms()
-      .find((platform) => platform === "android" || platform === "ios");
+      .find((platform) => platform === "mobileweb");
+    this.platformName =
+      this.platformName === undefined
+        ? this.platform
+            .platforms()
+            .find((platform) => platform === "android" || platform === "ios")
+        : this.platformName;
 
-    console.log(this.platformName);
+    this.user = new User("Abraham", "abrahamvega987@gmail.com", "Panamá", {
+      platform: this.platformName,
+    });
+
     //Configuracion de cliente
     this.configCatClient = configcat.createClientWithAutoPoll(
       "VqDYCHA8hUSDB78ion6qaQ/C8uDWiW6HU-GRdDf-INAgQ",
@@ -41,6 +51,6 @@ export class ConfigcatService {
 
   //función para saber si un feature está encendido o apagado
   async getlist_feature(): Promise<boolean> {
-    return await this.configCatClient.getValueAsync("prueba", false);
+    return await this.configCatClient.getValueAsync("prueba", false, this.user);
   }
 }
