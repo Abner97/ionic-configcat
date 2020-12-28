@@ -3,6 +3,9 @@ import { Lista } from "../../models/lista.model";
 import { DeseosService } from "src/app/services/deseos.service";
 import { ActivatedRoute } from "@angular/router";
 import { ListaItem } from "src/app/models/lista-item.model";
+import { AlertController, NavController } from "@ionic/angular";
+import { Subscription } from "rxjs";
+import { RoxServiceService } from "src/app/services/rox-service.service";
 
 @Component({
   selector: "app-agregar",
@@ -12,10 +15,14 @@ import { ListaItem } from "src/app/models/lista-item.model";
 export class AgregarPage implements OnInit {
   lista: Lista;
   itemName = "";
+  subscription: Subscription;
 
   constructor(
     private deseosService: DeseosService,
-    private router: ActivatedRoute
+    private router: ActivatedRoute,
+    public roxService: RoxServiceService,
+    public alertController: AlertController,
+    public navCtrl: NavController
   ) {
     const listaId = this.router.snapshot.paramMap.get("listaId");
 
@@ -24,7 +31,17 @@ export class AgregarPage implements OnInit {
   }
 
   ngOnInit() {}
+  ionViewDidEnter(): void {
+    this.subscription = this.roxService.add_listObs.subscribe((enabled) => {
+      if (!enabled) {
+        this.showAlert();
+      }
+    });
+  }
 
+  ionViewDidLeave() {
+    this.subscription.unsubscribe();
+  }
   addItem() {
     if (this.itemName.length === 0) {
       return;
@@ -49,5 +66,30 @@ export class AgregarPage implements OnInit {
     }
 
     this.deseosService.guardarStorage();
+  }
+
+  showAlert() {
+    this.alertController
+      .create({
+        header: "Anuncio",
+        subHeader: "",
+        message:
+          "Este servicio a sido inhabilitado temporalmente, lamentamos las molestias",
+        buttons: [
+          {
+            text: "Ok",
+            role: "ok",
+            handler: (data) => {
+              this.navCtrl.navigateRoot(["/tabs/tab1"], {
+                state: {},
+                animated: true,
+              });
+            },
+          },
+        ],
+      })
+      .then((res) => {
+        res.present();
+      });
   }
 }

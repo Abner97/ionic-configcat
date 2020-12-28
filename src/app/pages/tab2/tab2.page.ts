@@ -43,8 +43,7 @@ export class Tab2Page {
         res.present();
       });
   }
-
-  ngOnInit(): void {
+  ionViewDidEnter(): void {
     this.subscription = this.configcatService.list_featureObs.subscribe(
       (enabled) => {
         if (!enabled) {
@@ -52,6 +51,10 @@ export class Tab2Page {
         }
       }
     );
+  }
+
+  ionViewDidLeave() {
+    this.subscription.unsubscribe();
   }
 
   ngOnDestroy(): void {
