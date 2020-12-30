@@ -25,7 +25,6 @@ export class RoutesGuardService implements CanActivate {
   }
 
   async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    debugger;
     const enabled = await this.configCatService.getlist_feature();
     if (!enabled) {
       this.navCtrl.navigateRoot(["/tabs/tab1"], { state: {}, animated: true });

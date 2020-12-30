@@ -4,6 +4,7 @@ import { IConfigCatClient } from "configcat-common/lib/ConfigCatClient";
 import { Observable, Subject } from "rxjs";
 import { LogLevel, User } from "configcat-common";
 import { Platform } from "@ionic/angular";
+import { PlatformService } from "./platform.service";
 
 @Injectable({
   providedIn: "root",
@@ -15,18 +16,10 @@ export class ConfigcatService {
   private list_feature: Subject<boolean> = new Subject<boolean>();
   public list_featureObs: Observable<boolean> = this.list_feature.asObservable();
 
-  constructor(public platform: Platform) {
+  constructor(public platformService: PlatformService) {
     let logger = configcat.createConsoleLogger(LogLevel.Info);
     // Setting log level to 3 (Info)
-    this.platformName = this.platform
-      .platforms()
-      .find((platform) => platform === "mobileweb");
-    this.platformName =
-      this.platformName === undefined
-        ? this.platform
-            .platforms()
-            .find((platform) => platform === "android" || platform === "ios")
-        : this.platformName;
+    this.platformName = this.platformService.getPlatformName();
 
     this.user = new User("Abraham", "abrahamvega987@gmail.com", "Panamá", {
       platform: this.platformName,
