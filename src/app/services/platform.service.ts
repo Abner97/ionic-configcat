@@ -16,7 +16,7 @@ export class PlatformService {
         ? this.platform
             .platforms()
             .find((platform) => platform === "android" || platform === "ios")
-        : "unrecognized";
+        : this.platformName;
   }
 
   public getPlatformName(): string {

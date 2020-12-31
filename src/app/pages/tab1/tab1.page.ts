@@ -18,7 +18,7 @@ export class Tab1Page {
     private alertCtrl: AlertController,
     public roxService: RoxServiceService
   ) {
-    this.add_listFeature = roxService.checkAddListFeatureStatus();
+    this.add_listFeature = true;
   }
 
   ngOnInit(): void {}
@@ -33,7 +33,7 @@ export class Tab1Page {
   }
 
   async agregarLista() {
-    //
+    this.add_listFeature = this.roxService.checkAddListFeatureStatus();
     const alert = await this.alertCtrl.create(
       this.add_listFeature
         ? {

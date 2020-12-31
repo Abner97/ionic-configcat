@@ -92,12 +92,15 @@ let Tab2Page = class Tab2Page {
             res.present();
         });
     }
-    ngOnInit() {
+    ionViewDidEnter() {
         this.subscription = this.configcatService.list_featureObs.subscribe((enabled) => {
             if (!enabled) {
                 this.showAlert();
             }
         });
+    }
+    ionViewDidLeave() {
+        this.subscription.unsubscribe();
     }
     ngOnDestroy() {
         this.subscription.unsubscribe();

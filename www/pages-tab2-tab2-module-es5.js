@@ -165,8 +165,8 @@
             });
           }
         }, {
-          key: "ngOnInit",
-          value: function ngOnInit() {
+          key: "ionViewDidEnter",
+          value: function ionViewDidEnter() {
             var _this2 = this;
 
             this.subscription = this.configcatService.list_featureObs.subscribe(function (enabled) {
@@ -174,6 +174,11 @@
                 _this2.showAlert();
               }
             });
+          }
+        }, {
+          key: "ionViewDidLeave",
+          value: function ionViewDidLeave() {
+            this.subscription.unsubscribe();
           }
         }, {
           key: "ngOnDestroy",

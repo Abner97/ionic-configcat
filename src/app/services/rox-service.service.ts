@@ -3,23 +3,20 @@ import * as Rox from "rox-browser";
 import { Observable, Subject } from "rxjs";
 import { PlatformService } from "./platform.service";
 
-interface Properties {
-  key: string;
-  value: string;
-}
-
 @Injectable({
   providedIn: "root",
 })
 export class RoxServiceService {
   private add_list: Subject<boolean> = new Subject<boolean>();
   public add_listObs: Observable<boolean> = this.add_list.asObservable();
-  private RoxProperties: Array<Properties> = [];
-
+  private platformName: string;
   constructor(public platformService: PlatformService) {
-    this.initRollout().then(function () {
+    this.platformName = this.platformService.getPlatformName();
+    this.initRollout().then(() => {
       console.log("Done loading Rollout");
-      Rox.setCustomStringProperty("email", "abrahamvega987@gmail.com");
+      Rox.setCustomStringProperty("email", "abvega@bgeneral.com");
+      Rox.setCustomStringProperty("platform", this.platformName);
+      Rox.setCustomStringProperty("username", "ab");
     });
   }
 

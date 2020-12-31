@@ -1720,15 +1720,14 @@
                 while (1) {
                   switch (_context.prev = _context.next) {
                     case 0:
-                      debugger;
-                      _context.next = 3;
+                      _context.next = 2;
                       return this.configCatService.getlist_feature();
 
-                    case 3:
+                    case 2:
                       enabled = _context.sent;
 
                       if (enabled) {
-                        _context.next = 7;
+                        _context.next = 6;
                         break;
                       }
 
@@ -1738,10 +1737,10 @@
                       });
                       return _context.abrupt("return", false);
 
-                    case 7:
+                    case 6:
                       return _context.abrupt("return", true);
 
-                    case 8:
+                    case 7:
                     case "end":
                       return _context.stop();
                   }
@@ -1888,25 +1887,25 @@
       /* harmony import */
 
 
-      var _ionic_angular__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
-      /*! @ionic/angular */
-      "TEn/");
+      var _platform_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
+      /*! ./platform.service */
+      "EktT");
 
       var ConfigcatService = /*#__PURE__*/function () {
-        function ConfigcatService(platform) {
+        function ConfigcatService(platformService) {
           var _this4 = this;
 
           _classCallCheck(this, ConfigcatService);
 
-          this.platform = platform;
+          this.platformService = platformService;
           this.list_feature = new rxjs__WEBPACK_IMPORTED_MODULE_3__["Subject"]();
           this.list_featureObs = this.list_feature.asObservable();
           var logger = configcat_js__WEBPACK_IMPORTED_MODULE_2__["createConsoleLogger"](configcat_common__WEBPACK_IMPORTED_MODULE_4__["LogLevel"].Info); // Setting log level to 3 (Info)
 
-          this.platformName = this.platform.platforms().find(function (platform) {
-            return platform === "android" || platform === "ios";
-          });
-          console.log(this.platformName); //Configuracion de cliente
+          this.platformName = this.platformService.getPlatformName();
+          this.user = new configcat_common__WEBPACK_IMPORTED_MODULE_4__["User"]("Abraham", "abrahamvega987@gmail.com", "Panamá", {
+            platform: this.platformName
+          }); //Configuracion de cliente
 
           this.configCatClient = configcat_js__WEBPACK_IMPORTED_MODULE_2__["createClientWithAutoPoll"]("VqDYCHA8hUSDB78ion6qaQ/C8uDWiW6HU-GRdDf-INAgQ", {
             // <-- This is the actual SDK Key for your Production environment
@@ -1948,7 +1947,7 @@
                   switch (_context3.prev = _context3.next) {
                     case 0:
                       _context3.next = 2;
-                      return this.configCatClient.getValueAsync("prueba", false);
+                      return this.configCatClient.getValueAsync("prueba", false, this.user);
 
                     case 2:
                       return _context3.abrupt("return", _context3.sent);
@@ -1968,7 +1967,7 @@
 
       ConfigcatService.ctorParameters = function () {
         return [{
-          type: _ionic_angular__WEBPACK_IMPORTED_MODULE_5__["Platform"]
+          type: _platform_service__WEBPACK_IMPORTED_MODULE_5__["PlatformService"]
         }];
       };
 
@@ -2388,7 +2387,15 @@
             });
           },
           canActivate: [_services_routes_guard_service__WEBPACK_IMPORTED_MODULE_3__["RoutesGuardService"]]
-        }, {
+        }, // {
+        //   path: "agregar/:listaId",
+        //   loadChildren: () =>
+        //     import("../pages/agregar/agregar.module").then(
+        //       (m) => m.AgregarPageModule
+        //     ),
+        //   canActivate: [RoutesGuardService],
+        // },
+        {
           path: "",
           redirectTo: "/tabs/tab1",
           pathMatch: "full"

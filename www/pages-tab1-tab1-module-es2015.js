@@ -1,5 +1,42 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([["pages-tab1-tab1-module"],{
 
+/***/ "4w7E":
+/*!*************************************!*\
+  !*** ./src/app/guards/rox.guard.ts ***!
+  \*************************************/
+/*! exports provided: RoxGuard */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RoxGuard", function() { return RoxGuard; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "mrSG");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var src_app_services_rox_service_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/services/rox-service.service */ "WxBz");
+
+
+
+let RoxGuard = class RoxGuard {
+    constructor(roxService) {
+        this.roxService = roxService;
+    }
+    canActivate(next, state) {
+        return this.roxService.checkAddListFeatureStatus();
+    }
+};
+RoxGuard.ctorParameters = () => [
+    { type: src_app_services_rox_service_service__WEBPACK_IMPORTED_MODULE_2__["RoxServiceService"] }
+];
+RoxGuard = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
+        providedIn: "root",
+    })
+], RoxGuard);
+
+
+
+/***/ }),
+
 /***/ "JGGF":
 /*!*******************************************!*\
   !*** ./src/app/pages/tab1/tab1.page.scss ***!
@@ -29,6 +66,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "fXoL");
 /* harmony import */ var src_app_services_deseos_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/services/deseos.service */ "Z16M");
 /* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ionic/angular */ "TEn/");
+/* harmony import */ var src_app_services_rox_service_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/services/rox-service.service */ "WxBz");
+
 
 
 
@@ -36,50 +75,79 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let Tab1Page = class Tab1Page {
-    constructor(deseosService, navCtrl, alertCtrl) {
+    constructor(deseosService, navCtrl, alertCtrl, roxService) {
         this.deseosService = deseosService;
         this.navCtrl = navCtrl;
         this.alertCtrl = alertCtrl;
+        this.roxService = roxService;
+        this.add_listFeature = roxService.checkAddListFeatureStatus();
+    }
+    ngOnInit() { }
+    ionViewDidEnter() {
+        this.subscription = this.roxService.add_listObs.subscribe((enabled) => {
+            this.add_listFeature = enabled;
+            console.log(enabled);
+        });
+    }
+    ionViewDidLeave() {
+        this.subscription.unsubscribe();
     }
     agregarLista() {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
-            // this.navCtrl.navigateForward(["/tabs/tab1/agregar"]);
-            const alert = yield this.alertCtrl.create({
-                header: "Nueva lista",
-                inputs: [
-                    {
-                        name: "titulo",
-                        type: "text",
-                        placeholder: "Nombre de la lista",
-                    },
-                ],
-                buttons: [
-                    {
-                        text: "Cancelar",
-                        role: "cancel",
-                        handler: () => {
-                            console.log("Cancelar");
+            //
+            const alert = yield this.alertCtrl.create(this.add_listFeature
+                ? {
+                    header: "Nueva lista",
+                    inputs: [
+                        {
+                            name: "titulo",
+                            type: "text",
+                            placeholder: "Nombre de la lista",
                         },
-                    },
-                    {
-                        text: "Crear",
-                        handler: (data) => {
-                            if (data.titulo.length === 0) {
-                                return;
-                            }
-                            this.deseosService.crearLista(data.titulo);
+                    ],
+                    buttons: [
+                        {
+                            text: "Cancelar",
+                            role: "cancel",
+                            handler: () => {
+                                console.log("Cancelar");
+                            },
                         },
-                    },
-                ],
-            });
+                        {
+                            text: "Crear",
+                            handler: (data) => {
+                                if (data.titulo.length === 0) {
+                                    return;
+                                }
+                                const listaId = this.deseosService.crearLista(data.titulo);
+                                // this.deseosService.crearLista(data.titulo);
+                                this.navCtrl.navigateForward([`/tabs/tab1/agregar`, listaId]);
+                            },
+                        },
+                    ],
+                }
+                : {
+                    header: "Information",
+                    subHeader: "El servicio de agregar una nueva lista no está disponible",
+                    buttons: [
+                        {
+                            text: "Continuar",
+                            role: "continue",
+                        },
+                    ],
+                });
             alert.present();
         });
+    }
+    goToList(id) {
+        this.navCtrl.navigateForward([`/tabs/tab1/agregar`, id]);
     }
 };
 Tab1Page.ctorParameters = () => [
     { type: src_app_services_deseos_service__WEBPACK_IMPORTED_MODULE_4__["DeseosService"] },
     { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_5__["NavController"] },
-    { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_5__["AlertController"] }
+    { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_5__["AlertController"] },
+    { type: src_app_services_rox_service_service__WEBPACK_IMPORTED_MODULE_6__["RoxServiceService"] }
 ];
 Tab1Page = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["Component"])({
@@ -106,7 +174,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "mrSG");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "fXoL");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "tyNb");
-/* harmony import */ var _tab1_page__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./tab1.page */ "LhMw");
+/* harmony import */ var src_app_guards_rox_guard__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/guards/rox.guard */ "4w7E");
+/* harmony import */ var _tab1_page__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./tab1.page */ "LhMw");
+
 
 
 
@@ -114,11 +184,12 @@ __webpack_require__.r(__webpack_exports__);
 const routes = [
     {
         path: "",
-        component: _tab1_page__WEBPACK_IMPORTED_MODULE_3__["Tab1Page"],
+        component: _tab1_page__WEBPACK_IMPORTED_MODULE_4__["Tab1Page"],
     },
     {
-        path: "agregar",
+        path: "agregar/:listaId",
         loadChildren: () => __webpack_require__.e(/*! import() | pages-agregar-agregar-module */ "pages-agregar-agregar-module").then(__webpack_require__.bind(null, /*! ../../pages/agregar/agregar.module */ "PNSq")).then((m) => m.AgregarPageModule),
+        canActivate: [src_app_guards_rox_guard__WEBPACK_IMPORTED_MODULE_3__["RoxGuard"]],
     },
 ];
 let Tab1PageRoutingModule = class Tab1PageRoutingModule {
@@ -143,7 +214,7 @@ Tab1PageRoutingModule = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<ion-header [translucent]=\"true\" class=\"ion-no-border\">\n  <ion-toolbar>\n    <ion-title> Pendientes </ion-title>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content [fullscreen]=\"true\">\n  <ion-list>\n    <ion-item *ngFor=\"let lista of deseosService.listas\">\n      <ion-label>{{lista.titulo}}</ion-label>\n    </ion-item>\n  </ion-list>\n  <ion-fab vertical=\"bottom\" horizontal=\"end\" slot=\"fixed\">\n    <ion-fab-button color=\"tertiary\" (click)=\"agregarLista()\">\n      <ion-icon name=\"add\"></ion-icon>\n    </ion-fab-button>\n  </ion-fab>\n</ion-content>\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<ion-header [translucent]=\"true\" class=\"ion-no-border\">\n  <ion-toolbar>\n    <ion-title> Pendientes </ion-title>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content [fullscreen]=\"true\">\n  <ion-list>\n    <ion-item *ngFor=\"let lista of deseosService.listas\">\n      <ion-label (click)=\"goToList(lista.id)\">{{lista.titulo}}</ion-label>\n    </ion-item>\n  </ion-list>\n  <ion-fab vertical=\"bottom\" horizontal=\"end\" slot=\"fixed\">\n    <ion-fab-button color=\"tertiary\" (click)=\"agregarLista()\">\n      <ion-icon name=\"add\"></ion-icon>\n    </ion-fab-button>\n  </ion-fab>\n</ion-content>\n");
 
 /***/ }),
 

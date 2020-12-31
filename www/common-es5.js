@@ -369,42 +369,71 @@
       /* harmony import */
 
 
-      var _models_lista_model__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
+      var _ionic_angular__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
+      /*! @ionic/angular */
+      "TEn/");
+      /* harmony import */
+
+
+      var _models_lista_model__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
       /*! ../models/lista.model */
       "Zs01");
 
       var DeseosService = /*#__PURE__*/function () {
-        function DeseosService(storage) {
+        function DeseosService(storage, platform) {
           _classCallCheck(this, DeseosService);
 
           this.storage = storage;
+          this.platform = platform;
           this.listas = [];
-          var lista1 = new _models_lista_model__WEBPACK_IMPORTED_MODULE_3__["Lista"]("Recolectar piedras del infinito");
-          var lista2 = new _models_lista_model__WEBPACK_IMPORTED_MODULE_3__["Lista"]("Héroes a desaparecer");
-          this.listas.push(lista1, lista2);
-          this.cargarStorage();
+          this.platformName = this.platform.platforms().find(function (platform) {
+            return platform === "mobileweb";
+          });
+          this.platformName = this.platformName === undefined ? this.platform.platforms().find(function (platform) {
+            return platform === "android" || platform === "ios";
+          }) : this.platformName;
+          var listasTemp = this.cargarStorage();
+
+          if (listasTemp !== null) {
+            this.listas = listasTemp;
+          }
+
+          console.log(this.platformName);
         }
 
         _createClass(DeseosService, [{
           key: "crearLista",
           value: function crearLista(titulo) {
-            var nuevaLista = new _models_lista_model__WEBPACK_IMPORTED_MODULE_3__["Lista"](titulo);
+            var nuevaLista = new _models_lista_model__WEBPACK_IMPORTED_MODULE_4__["Lista"](titulo);
             this.listas.push(nuevaLista);
             this.guardarStorage();
+            return nuevaLista.id;
           }
         }, {
           key: "guardarStorage",
           value: function guardarStorage() {
-            this.storage.setItem("data", this.listas).then(function () {
+            this.platformName === "mobileweb" ? localStorage.setItem("data", JSON.stringify(this.listas)) : this.storage.setItem("data", this.listas).then(function () {
               return console.log("item stored");
             }, function (error) {
               return console.error("error storing item", error);
             });
           }
         }, {
+          key: "obtenerLista",
+          value: function obtenerLista(id) {
+            id = typeof id === "number" ? id : Number(id);
+            return this.listas.find(function (lista) {
+              return lista.id === id;
+            });
+          }
+        }, {
           key: "cargarStorage",
           value: function cargarStorage() {
-            console.log(this.storage.getItem("data"));
+            var data = [];
+            this.platformName === "mobileweb" ? data = JSON.parse(localStorage.getItem("data")) : this.storage.getItem("data").then(function (listas) {
+              return listas;
+            });
+            return data;
           }
         }]);
 
@@ -414,6 +443,8 @@
       DeseosService.ctorParameters = function () {
         return [{
           type: _ionic_native_native_storage_ngx__WEBPACK_IMPORTED_MODULE_2__["NativeStorage"]
+        }, {
+          type: _ionic_angular__WEBPACK_IMPORTED_MODULE_3__["Platform"]
         }];
       };
 

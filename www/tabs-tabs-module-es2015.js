@@ -1139,7 +1139,6 @@ let RoutesGuardService = class RoutesGuardService {
     }
     canActivate(route, state) {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
-            debugger;
             const enabled = yield this.configCatService.getlist_feature();
             if (!enabled) {
                 this.navCtrl.navigateRoot(["/tabs/tab1"], { state: {}, animated: true });
@@ -1229,7 +1228,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var configcat_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! configcat-js */ "F0Vv");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "qCKp");
 /* harmony import */ var configcat_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! configcat-common */ "q7S3");
-/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ionic/angular */ "TEn/");
+/* harmony import */ var _platform_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./platform.service */ "EktT");
 
 
 
@@ -1237,15 +1236,16 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let ConfigcatService = class ConfigcatService {
-    constructor(platform) {
-        this.platform = platform;
+    constructor(platformService) {
+        this.platformService = platformService;
         this.list_feature = new rxjs__WEBPACK_IMPORTED_MODULE_3__["Subject"]();
         this.list_featureObs = this.list_feature.asObservable();
-        let logger = configcat_js__WEBPACK_IMPORTED_MODULE_2__["createConsoleLogger"](configcat_common__WEBPACK_IMPORTED_MODULE_4__["LogLevel"].Info); // Setting log level to 3 (Info)
-        this.platformName = this.platform
-            .platforms()
-            .find((platform) => platform === "android" || platform === "ios");
-        console.log(this.platformName);
+        let logger = configcat_js__WEBPACK_IMPORTED_MODULE_2__["createConsoleLogger"](configcat_common__WEBPACK_IMPORTED_MODULE_4__["LogLevel"].Info);
+        // Setting log level to 3 (Info)
+        this.platformName = this.platformService.getPlatformName();
+        this.user = new configcat_common__WEBPACK_IMPORTED_MODULE_4__["User"]("Abraham", "abrahamvega987@gmail.com", "Panamá", {
+            platform: this.platformName,
+        });
         //Configuracion de cliente
         this.configCatClient = configcat_js__WEBPACK_IMPORTED_MODULE_2__["createClientWithAutoPoll"]("VqDYCHA8hUSDB78ion6qaQ/C8uDWiW6HU-GRdDf-INAgQ", {
             // <-- This is the actual SDK Key for your Production environment
@@ -1261,12 +1261,12 @@ let ConfigcatService = class ConfigcatService {
     //función para saber si un feature está encendido o apagado
     getlist_feature() {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
-            return yield this.configCatClient.getValueAsync("prueba", false);
+            return yield this.configCatClient.getValueAsync("prueba", false, this.user);
         });
     }
 };
 ConfigcatService.ctorParameters = () => [
-    { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_5__["Platform"] }
+    { type: _platform_service__WEBPACK_IMPORTED_MODULE_5__["PlatformService"] }
 ];
 ConfigcatService = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
@@ -1514,6 +1514,14 @@ const routes = [
                 loadChildren: () => Promise.all(/*! import() | pages-tab2-tab2-module */[__webpack_require__.e("common"), __webpack_require__.e("pages-tab2-tab2-module")]).then(__webpack_require__.bind(null, /*! ../pages/tab2/tab2.module */ "HJ/b")).then((m) => m.Tab2PageModule),
                 canActivate: [_services_routes_guard_service__WEBPACK_IMPORTED_MODULE_3__["RoutesGuardService"]],
             },
+            // {
+            //   path: "agregar/:listaId",
+            //   loadChildren: () =>
+            //     import("../pages/agregar/agregar.module").then(
+            //       (m) => m.AgregarPageModule
+            //     ),
+            //   canActivate: [RoutesGuardService],
+            // },
             {
                 path: "",
                 redirectTo: "/tabs/tab1",

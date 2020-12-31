@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/abraham/Dev/MobileDev/deseos/src/main.ts */"zUnb");
+module.exports = __webpack_require__(/*! /home/abraham/Dev/MobileDev/ionic-configcat/src/main.ts */"zUnb");
 
 
 /***/ }),
@@ -36,6 +36,52 @@ const environment = {
  * on performance if an error is thrown.
  */
 // import 'zone.js/dist/zone-error';  // Included with Angular CLI.
+
+
+/***/ }),
+
+/***/ "EktT":
+/*!**********************************************!*\
+  !*** ./src/app/services/platform.service.ts ***!
+  \**********************************************/
+/*! exports provided: PlatformService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PlatformService", function() { return PlatformService; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "mrSG");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ionic/angular */ "TEn/");
+
+
+
+let PlatformService = class PlatformService {
+    constructor(platform) {
+        this.platform = platform;
+        this.platformName = this.platform
+            .platforms()
+            .find((platform) => platform === "mobileweb");
+        this.platformName =
+            this.platformName === undefined
+                ? this.platform
+                    .platforms()
+                    .find((platform) => platform === "android" || platform === "ios")
+                : "unrecognized";
+    }
+    getPlatformName() {
+        return this.platformName;
+    }
+};
+PlatformService.ctorParameters = () => [
+    { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["Platform"] }
+];
+PlatformService = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
+        providedIn: "root",
+    })
+], PlatformService);
+
 
 
 /***/ }),
@@ -126,19 +172,30 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "fXoL");
 /* harmony import */ var rox_browser__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rox-browser */ "4DrC");
 /* harmony import */ var rox_browser__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(rox_browser__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "qCKp");
+/* harmony import */ var _platform_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./platform.service */ "EktT");
+
+
 
 
 
 let RoxServiceService = class RoxServiceService {
-    constructor() {
+    constructor(platformService) {
+        this.platformService = platformService;
+        this.add_list = new rxjs__WEBPACK_IMPORTED_MODULE_3__["Subject"]();
+        this.add_listObs = this.add_list.asObservable();
+        this.RoxProperties = [];
         this.flags = {
-            prueba: new rox_browser__WEBPACK_IMPORTED_MODULE_2__["Flag"](),
+            add_list: new rox_browser__WEBPACK_IMPORTED_MODULE_2__["Flag"](),
+            ended: new rox_browser__WEBPACK_IMPORTED_MODULE_2__["Flag"](),
         };
         this.configurationFetchedHandler = (fetcherResults) => {
             console.log(fetcherResults);
+            this.add_list.next(this.flags.add_list.isEnabled());
         };
         this.initRollout().then(function () {
             console.log("Done loading Rollout");
+            rox_browser__WEBPACK_IMPORTED_MODULE_2__["setCustomStringProperty"]("email", "abrahamvega987@gmail.com");
         });
     }
     initRollout() {
@@ -146,17 +203,18 @@ let RoxServiceService = class RoxServiceService {
             const options = {
                 configurationFetchedHandler: this.configurationFetchedHandler,
             };
+            rox_browser__WEBPACK_IMPORTED_MODULE_2__["register"]("", this.flags);
             // Setup the Rollout key
             yield rox_browser__WEBPACK_IMPORTED_MODULE_2__["setup"]("5fda7d19ccead0b18d678ff1", options);
-            // Boolean flag example
-            if (this.flags.prueba.isEnabled()) {
-                console.log("prueba flag is true");
-                // TODO:  Put your code here that needs to be gated
-            }
         });
     }
+    checkAddListFeatureStatus() {
+        return this.flags.add_list.isEnabled();
+    }
 };
-RoxServiceService.ctorParameters = () => [];
+RoxServiceService.ctorParameters = () => [
+    { type: _platform_service__WEBPACK_IMPORTED_MODULE_4__["PlatformService"] }
+];
 RoxServiceService = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
         providedIn: "root",

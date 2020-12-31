@@ -22,6 +22,9 @@ export class RoxGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
+    console.group("Rox Guard");
+    console.log(this.roxService.checkAddListFeatureStatus());
+    console.groupEnd();
     return this.roxService.checkAddListFeatureStatus();
   }
 }

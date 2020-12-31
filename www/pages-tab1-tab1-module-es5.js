@@ -7,6 +7,73 @@
 
   (window["webpackJsonp"] = window["webpackJsonp"] || []).push([["pages-tab1-tab1-module"], {
     /***/
+    "4w7E":
+    /*!*************************************!*\
+      !*** ./src/app/guards/rox.guard.ts ***!
+      \*************************************/
+
+    /*! exports provided: RoxGuard */
+
+    /***/
+    function w7E(module, __webpack_exports__, __webpack_require__) {
+      "use strict";
+
+      __webpack_require__.r(__webpack_exports__);
+      /* harmony export (binding) */
+
+
+      __webpack_require__.d(__webpack_exports__, "RoxGuard", function () {
+        return RoxGuard;
+      });
+      /* harmony import */
+
+
+      var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
+      /*! tslib */
+      "mrSG");
+      /* harmony import */
+
+
+      var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
+      /*! @angular/core */
+      "fXoL");
+      /* harmony import */
+
+
+      var src_app_services_rox_service_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
+      /*! src/app/services/rox-service.service */
+      "WxBz");
+
+      var RoxGuard = /*#__PURE__*/function () {
+        function RoxGuard(roxService) {
+          _classCallCheck(this, RoxGuard);
+
+          this.roxService = roxService;
+        }
+
+        _createClass(RoxGuard, [{
+          key: "canActivate",
+          value: function canActivate(next, state) {
+            return this.roxService.checkAddListFeatureStatus();
+          }
+        }]);
+
+        return RoxGuard;
+      }();
+
+      RoxGuard.ctorParameters = function () {
+        return [{
+          type: src_app_services_rox_service_service__WEBPACK_IMPORTED_MODULE_2__["RoxServiceService"]
+        }];
+      };
+
+      RoxGuard = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
+        providedIn: "root"
+      })], RoxGuard);
+      /***/
+    },
+
+    /***/
     "JGGF":
     /*!*******************************************!*\
       !*** ./src/app/pages/tab1/tab1.page.scss ***!
@@ -81,21 +148,47 @@
       var _ionic_angular__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
       /*! @ionic/angular */
       "TEn/");
+      /* harmony import */
+
+
+      var src_app_services_rox_service_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(
+      /*! src/app/services/rox-service.service */
+      "WxBz");
 
       var Tab1Page = /*#__PURE__*/function () {
-        function Tab1Page(deseosService, navCtrl, alertCtrl) {
+        function Tab1Page(deseosService, navCtrl, alertCtrl, roxService) {
           _classCallCheck(this, Tab1Page);
 
           this.deseosService = deseosService;
           this.navCtrl = navCtrl;
           this.alertCtrl = alertCtrl;
+          this.roxService = roxService;
+          this.add_listFeature = roxService.checkAddListFeatureStatus();
         }
 
         _createClass(Tab1Page, [{
+          key: "ngOnInit",
+          value: function ngOnInit() {}
+        }, {
+          key: "ionViewDidEnter",
+          value: function ionViewDidEnter() {
+            var _this = this;
+
+            this.subscription = this.roxService.add_listObs.subscribe(function (enabled) {
+              _this.add_listFeature = enabled;
+              console.log(enabled);
+            });
+          }
+        }, {
+          key: "ionViewDidLeave",
+          value: function ionViewDidLeave() {
+            this.subscription.unsubscribe();
+          }
+        }, {
           key: "agregarLista",
           value: function agregarLista() {
             return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-              var _this = this;
+              var _this2 = this;
 
               var alert;
               return regeneratorRuntime.wrap(function _callee$(_context) {
@@ -103,7 +196,7 @@
                   switch (_context.prev = _context.next) {
                     case 0:
                       _context.next = 2;
-                      return this.alertCtrl.create({
+                      return this.alertCtrl.create(this.add_listFeature ? {
                         header: "Nueva lista",
                         inputs: [{
                           name: "titulo",
@@ -123,8 +216,18 @@
                               return;
                             }
 
-                            _this.deseosService.crearLista(data.titulo);
+                            var listaId = _this2.deseosService.crearLista(data.titulo); // this.deseosService.crearLista(data.titulo);
+
+
+                            _this2.navCtrl.navigateForward(["/tabs/tab1/agregar", listaId]);
                           }
+                        }]
+                      } : {
+                        header: "Information",
+                        subHeader: "El servicio de agregar una nueva lista no está disponible",
+                        buttons: [{
+                          text: "Continuar",
+                          role: "continue"
                         }]
                       });
 
@@ -140,6 +243,11 @@
               }, _callee, this);
             }));
           }
+        }, {
+          key: "goToList",
+          value: function goToList(id) {
+            this.navCtrl.navigateForward(["/tabs/tab1/agregar", id]);
+          }
         }]);
 
         return Tab1Page;
@@ -152,6 +260,8 @@
           type: _ionic_angular__WEBPACK_IMPORTED_MODULE_5__["NavController"]
         }, {
           type: _ionic_angular__WEBPACK_IMPORTED_MODULE_5__["AlertController"]
+        }, {
+          type: src_app_services_rox_service_service__WEBPACK_IMPORTED_MODULE_6__["RoxServiceService"]
         }];
       };
 
@@ -203,15 +313,21 @@
       /* harmony import */
 
 
-      var _tab1_page__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
+      var src_app_guards_rox_guard__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
+      /*! src/app/guards/rox.guard */
+      "4w7E");
+      /* harmony import */
+
+
+      var _tab1_page__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
       /*! ./tab1.page */
       "LhMw");
 
       var routes = [{
         path: "",
-        component: _tab1_page__WEBPACK_IMPORTED_MODULE_3__["Tab1Page"]
+        component: _tab1_page__WEBPACK_IMPORTED_MODULE_4__["Tab1Page"]
       }, {
-        path: "agregar",
+        path: "agregar/:listaId",
         loadChildren: function loadChildren() {
           return __webpack_require__.e(
           /*! import() | pages-agregar-agregar-module */
@@ -220,7 +336,8 @@
           "PNSq")).then(function (m) {
             return m.AgregarPageModule;
           });
-        }
+        },
+        canActivate: [src_app_guards_rox_guard__WEBPACK_IMPORTED_MODULE_3__["RoxGuard"]]
       }];
 
       var Tab1PageRoutingModule = function Tab1PageRoutingModule() {
@@ -250,7 +367,7 @@
       /* harmony default export */
 
 
-      __webpack_exports__["default"] = "<ion-header [translucent]=\"true\" class=\"ion-no-border\">\n  <ion-toolbar>\n    <ion-title> Pendientes </ion-title>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content [fullscreen]=\"true\">\n  <ion-list>\n    <ion-item *ngFor=\"let lista of deseosService.listas\">\n      <ion-label>{{lista.titulo}}</ion-label>\n    </ion-item>\n  </ion-list>\n  <ion-fab vertical=\"bottom\" horizontal=\"end\" slot=\"fixed\">\n    <ion-fab-button color=\"tertiary\" (click)=\"agregarLista()\">\n      <ion-icon name=\"add\"></ion-icon>\n    </ion-fab-button>\n  </ion-fab>\n</ion-content>\n";
+      __webpack_exports__["default"] = "<ion-header [translucent]=\"true\" class=\"ion-no-border\">\n  <ion-toolbar>\n    <ion-title> Pendientes </ion-title>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content [fullscreen]=\"true\">\n  <ion-list>\n    <ion-item *ngFor=\"let lista of deseosService.listas\">\n      <ion-label (click)=\"goToList(lista.id)\">{{lista.titulo}}</ion-label>\n    </ion-item>\n  </ion-list>\n  <ion-fab vertical=\"bottom\" horizontal=\"end\" slot=\"fixed\">\n    <ion-fab-button color=\"tertiary\" (click)=\"agregarLista()\">\n      <ion-icon name=\"add\"></ion-icon>\n    </ion-fab-button>\n  </ion-fab>\n</ion-content>\n";
       /***/
     },
 
