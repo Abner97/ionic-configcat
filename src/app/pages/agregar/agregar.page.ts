@@ -51,7 +51,10 @@ export class AgregarPage implements OnInit {
     this.itemName = "";
     this.deseosService.guardarStorage();
   }
-
+  delete(index: number) {
+    this.lista.items.splice(index, 1);
+    this.deseosService.guardarStorage();
+  }
   checkChanged(item: ListaItem) {
     const pendientes = this.lista.items.filter(
       (itemData) => !itemData.completado

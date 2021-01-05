@@ -31,7 +31,10 @@ export class Tab1Page {
   ionViewDidLeave(): void {
     this.subscription.unsubscribe();
   }
-
+  delete(index: number) {
+    this.deseosService.listas.splice(index, 1);
+    this.deseosService.guardarStorage();
+  }
   async agregarLista() {
     this.add_listFeature = this.roxService.checkAddListFeatureStatus();
     const alert = await this.alertCtrl.create(
@@ -79,9 +82,5 @@ export class Tab1Page {
           }
     );
     alert.present();
-  }
-
-  goToList(id: string | number) {
-    this.navCtrl.navigateForward([`/tabs/tab1/agregar`, id]);
   }
 }

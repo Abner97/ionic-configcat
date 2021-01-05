@@ -35,6 +35,14 @@ export class DeseosService {
     return nuevaLista.id;
   }
 
+  borrarLista(lista: Lista) {
+    this.listas = this.listas.filter((listaData) => {
+      return listaData.id !== lista.id;
+    });
+
+    this.guardarStorage();
+  }
+
   guardarStorage() {
     this.platformName === "mobileweb"
       ? localStorage.setItem("data", JSON.stringify(this.listas))
