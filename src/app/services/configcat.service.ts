@@ -21,6 +21,7 @@ export class ConfigcatService {
     // Setting log level to 3 (Info)
     this.platformName = this.platformService.getPlatformName();
 
+    //Objeto User para evaluar propiedes
     this.user = new User("Abraham", "abrahamvega987@gmail.com", "Panamá", {
       platform: this.platformName,
     });
@@ -44,6 +45,7 @@ export class ConfigcatService {
 
   //función para saber si un feature está encendido o apagado
   async getlist_feature(): Promise<boolean> {
+    //Por defecto tiene la el value en false, se le pasa en el tercer parametro el objeto user
     return await this.configCatClient.getValueAsync("prueba", false, this.user);
   }
 }

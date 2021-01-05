@@ -1,28 +1,23 @@
 import { Injectable } from "@angular/core";
-import { ConfigcatService } from "./configcat.service";
 import {
-  Router,
   CanActivate,
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
   UrlTree,
 } from "@angular/router";
 import { Observable } from "rxjs";
+import { ConfigcatService } from "../services/configcat.service";
 import { NavController } from "@ionic/angular";
 
 @Injectable({
   providedIn: "root",
 })
-export class RoutesGuardService implements CanActivate {
+export class ConfigcatGuard implements CanActivate {
   activated = true;
-
   constructor(
     public configCatService: ConfigcatService,
-    private navCtrl: NavController,
-    private router: Router
-  ) {
-    const params = router.getCurrentNavigation().extras;
-  }
+    public navCtrl: NavController
+  ) {}
 
   async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const enabled = await this.configCatService.getlist_feature();

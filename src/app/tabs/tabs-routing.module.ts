@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { RoutesGuardService } from "../services/routes-guard.service";
+import { ConfigcatGuard } from "../guards/configcat.guard";
 import { TabsPage } from "./tabs.page";
 
 const routes: Routes = [
@@ -17,7 +17,7 @@ const routes: Routes = [
         path: "tab2",
         loadChildren: () =>
           import("../pages/tab2/tab2.module").then((m) => m.Tab2PageModule),
-        canActivate: [RoutesGuardService],
+        canActivate: [ConfigcatGuard],
       },
       // {
       //   path: "agregar/:listaId",

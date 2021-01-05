@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { RoxGuard } from './rox.guard';
+import { ConfigcatGuard } from './configcat.guard';
 
-describe('RoxGuard', () => {
-  let guard: RoxGuard;
+describe('ConfigcatGuard', () => {
+  let guard: ConfigcatGuard;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    guard = TestBed.inject(RoxGuard);
+    guard = TestBed.inject(ConfigcatGuard);
   });
 
   it('should be created', () => {

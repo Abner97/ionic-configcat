@@ -1,6 +1,5 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { RoxGuard } from "src/app/guards/rox.guard";
 import { Tab2Page } from "./tab2.page";
 
 const routes: Routes = [
@@ -14,7 +13,6 @@ const routes: Routes = [
       import("../../pages/agregar/agregar.module").then(
         (m) => m.AgregarPageModule
       ),
-    canActivate: [RoxGuard],
   },
 ];
 
