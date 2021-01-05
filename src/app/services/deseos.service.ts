@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { NativeStorage } from "@ionic-native/native-storage/ngx";
 import { Platform } from "@ionic/angular";
 import { Lista } from "../models/lista.model";
+import { PlatformService } from "./platform.service";
 
 @Injectable({
   providedIn: "root",
@@ -10,16 +11,11 @@ export class DeseosService {
   listas: Array<Lista> = [];
   platformName: string;
 
-  constructor(private storage: NativeStorage, public platform: Platform) {
-    this.platformName = this.platform
-      .platforms()
-      .find((platform) => platform === "mobileweb");
-    this.platformName =
-      this.platformName === undefined
-        ? this.platform
-            .platforms()
-            .find((platform) => platform === "android" || platform === "ios")
-        : this.platformName;
+  constructor(
+    private storage: NativeStorage,
+    public platformService: PlatformService
+  ) {
+    this.platformName = this.platformService.getPlatformName();
     let listasTemp = this.cargarStorage();
 
     if (listasTemp !== null) {
