@@ -104,4 +104,5 @@ Hacer slide del item hacia la izquierda:
 
 **Editar Lista**
 Hacer slide hacia la derecha:
+
 ![enter image description here](https://i.ibb.co/r088KLZ/Screenshot-from-2021-01-05-13-44-54.png)
