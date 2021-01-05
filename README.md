@@ -101,6 +101,7 @@ Para crear una lista nueva debe hacer debes presionar en el fab button en el tab
 Hacer slide del item hacia la izquierda:
 
 ![delete list](https://i.ibb.co/cChQ5dL/Screenshot-from-2021-01-05-13-42-31.png)
+
 **Editar Lista**
 Hacer slide hacia la derecha:
 ![enter image description here](https://i.ibb.co/r088KLZ/Screenshot-from-2021-01-05-13-44-54.png)
