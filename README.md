@@ -15,7 +15,7 @@ $ npm i configcat-js
 
     import  *  as configcat from  "configcat-js";
 
-- Crear una cuenta en [Configcat](configcat.com).
+- Crear una cuenta en [Configcat](https://www.configcat.com).
 - Crear las flags que desee utilizar en la app. (leer el documento de Jira para conocer más).
 - Para modificar el servicio de configcat debe editar el archivo **_configcat.service.ts_** que se encuentra en la ruta : /src/app/services/
   - Lo primero es cambiar el SDK Key por el de tu proyecto Configcat:
