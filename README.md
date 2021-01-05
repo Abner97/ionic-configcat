@@ -60,7 +60,7 @@ Instalar Rox en el proyecto (SDK para JS):
 
 - Crear las flags que desee utilizar en la app. (leer el documento de Jira para conocer más).
 - Para modificar el servicio de rox debe editar el archivo **_rox-service.service.ts_** que se encuentra en la ruta : /src/app/services/
-  - Lo primero es cambiar el SDK Key por el de tu proyecto Rox (recordar que el key cambia en cada environmet):
+  - Lo primero es cambiar el SDK Key por el de tu proyecto Rox (recordar que el key cambia en cada environment):
 
 ```js
 async  initRollout() {
