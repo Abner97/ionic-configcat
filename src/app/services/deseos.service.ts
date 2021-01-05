@@ -40,7 +40,7 @@ export class DeseosService {
   }
 
   guardarStorage() {
-    this.platformName === "mobileweb"
+    this.platformName === "mobileweb" || this.platformName === "desktop"
       ? localStorage.setItem("data", JSON.stringify(this.listas))
       : this.storage.setItem("data", this.listas).then(
           () => console.log("item stored"),
@@ -55,7 +55,7 @@ export class DeseosService {
 
   cargarStorage() {
     let data: Array<Lista> = [];
-    this.platformName === "mobileweb"
+    this.platformName === "mobileweb" || this.platformName === "desktop"
       ? (data = JSON.parse(localStorage.getItem("data")))
       : this.storage.getItem("data").then((listas) => {
           return listas;

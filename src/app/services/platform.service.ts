@@ -10,13 +10,15 @@ export class PlatformService {
   constructor(public platform: Platform) {
     this.platformName = this.platform
       .platforms()
-      .find((platform) => platform === "mobileweb");
+      .find((platform) => platform === "mobileweb" || platform === "desktop");
     this.platformName =
       this.platformName === undefined
         ? this.platform
             .platforms()
             .find((platform) => platform === "android" || platform === "ios")
         : this.platformName;
+
+    console.log(this.platform.platforms());
   }
 
   public getPlatformName(): string {
